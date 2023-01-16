@@ -15,7 +15,9 @@
  */
 package org.apache.ibatis.submitted.multipleresultsetswithassociation;
 
+import java.io.PrintWriter;
 import java.io.Reader;
+import java.io.StringWriter;
 import java.sql.Connection;
 import java.util.List;
 
@@ -65,7 +67,9 @@ class MultipleResultSetTest {
 
   private static void runReaderScript(Connection conn, Reader reader) {
     ScriptRunner runner = new ScriptRunner(conn);
-    runner.setLogWriter(null);
+    StringWriter sw = new StringWriter();
+    PrintWriter logWriter = new PrintWriter(sw);
+    runner.setLogWriter(logWriter);
     runner.setSendFullScript(true);
     runner.setAutoCommit(true);
     runner.setStopOnError(false);
@@ -74,6 +78,7 @@ class MultipleResultSetTest {
 
   @Test
   void shouldGetOrderDetailsEachHavingAnOrderHeader() {
+    // 在test/log4j下配置对应mapper
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       Mapper mapper = sqlSession.getMapper(Mapper.class);
       List<OrderDetail> orderDetails = mapper.getOrderDetailsWithHeaders();

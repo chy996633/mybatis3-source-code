@@ -171,12 +171,32 @@ class XmlConfigBuilderTest {
       XMLConfigBuilder builder = new XMLConfigBuilder(inputStream, null, props);
       Configuration config = builder.parse();
 
+      /**
+       * 看Automapping相关test，很全。
+       * 使用automapping时候注意
+       * 1. 三种类型，无，本体 和 级联
+       * 2. 全局config与局部mapper的继承关系
+       * 3. 对final字段的修改
+       */
       assertThat(config.getAutoMappingBehavior()).isEqualTo(AutoMappingBehavior.NONE);
       assertThat(config.getAutoMappingUnknownColumnBehavior()).isEqualTo(AutoMappingUnknownColumnBehavior.WARNING);
+
+
       assertThat(config.isCacheEnabled()).isFalse();
+
+      /**
+       * 动态代理工厂设置。通过动态代理 包装返回结构，支持延迟加载的特性
+       * 两种代理模式的差别？似乎只有性能上的差异。暂不研究
+       */
       assertThat(config.getProxyFactory()).isInstanceOf(CglibProxyFactory.class);
       assertThat(config.isLazyLoadingEnabled()).isTrue();
+
+      /**
+       * aggressiveLazyLoading默认为false，对象的每个属性按需加载。设置为true时，加载对象所有属性
+       */
       assertThat(config.isAggressiveLazyLoading()).isTrue();
+
+
       assertThat(config.isMultipleResultSetsEnabled()).isFalse();
       assertThat(config.isUseColumnLabel()).isFalse();
       assertThat(config.isUseGeneratedKeys()).isTrue();

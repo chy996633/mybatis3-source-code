@@ -55,6 +55,7 @@
         <id column="id" property="id"/>
         <collection property="pets" ofType="org.apache.ibatis.submitted.automapping.Pet">
             <id column="petId" property="petId"/>
+<!--            <result column="petName" property="petName"/>-->
             <association property="breeder" javaType="org.apache.ibatis.submitted.automapping.Breeder" autoMapping="true"/>
         </collection>
     </resultMap>

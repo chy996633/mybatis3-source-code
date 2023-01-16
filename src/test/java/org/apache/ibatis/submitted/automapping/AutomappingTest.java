@@ -100,7 +100,11 @@ class AutomappingTest {
       User user = mapper.getUserWithPets_Inline(2);
       Assertions.assertEquals(Integer.valueOf(2), user.getId());
       Assertions.assertEquals("User2", user.getName());
+
+      // collection不会继承resultMap中的autoMapping配置, 因此每一列result需要手动定义
       Assertions.assertNull(user.getPets().get(0).getPetName(), "should not inherit auto-mapping");
+
+//      Assertions.assertEquals("Chien", user.getPets().get(0).getPetName());
       Assertions.assertEquals("John", user.getPets().get(0).getBreeder().getBreederName());
     }
   }
